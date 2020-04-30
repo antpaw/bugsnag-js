@@ -24,14 +24,15 @@ yarn add @bugsnag/js @bugsnag/plugin-react
 Depending on how your application is structured, usage differs slightly:
 
 ```js
-// initialize bugsnag ASAP, before other imports
 import Bugsnag from '@bugsnag/js'
-Bugsnag.start('API_KEY')
-
+import BugsnagPluginReact from '@bugsnag/plugin-react'
 import ReactDOM from 'react-dom'
 import React from 'react'
-import bugsnagReact from '@bugsnag/plugin-react'
-Bugsnag.use(bugsnagReact, React)
+
+Bugsnag.start({
+  apiKey: 'API_KEY',
+  plugins: [new BugsnagPluginReact(React)]
+)
 
 // wrap your entire app tree in the ErrorBoundary provided
 const ErrorBoundary = Bugsnag.getPlugin('react');
