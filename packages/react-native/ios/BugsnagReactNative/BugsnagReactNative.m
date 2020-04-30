@@ -1,9 +1,17 @@
 #import "Bugsnag.h"
+#import "BugsnagClient.h"
 #import "BugsnagReactNative.h"
 #import "BugsnagReactNativeEmitter.h"
 
+@interface BugsnagClient ()
+- (NSDictionary *)collectAppWithState;
+- (NSDictionary *)collectDeviceWithState;
+- (NSArray *)collectBreadcrumbs;
+- (NSArray *)collectThreads;
+@end
+
 @interface Bugsnag ()
-+ (id)client;
++ (BugsnagClient *)client;
 + (BOOL)bugsnagStarted;
 + (BugsnagConfiguration *)configuration;
 + (void)updateCodeBundleId:(NSString *)codeBundleId;
@@ -91,7 +99,15 @@ RCT_EXPORT_METHOD(resumeSession) {
 RCT_EXPORT_METHOD(getPayloadInfo:(NSDictionary *)options
                          resolve:(RCTPromiseResolveBlock)resolve
                           reject:(RCTPromiseRejectBlock)reject) {
-    resolve(@{});
+    BugsnagClient *client = [Bugsnag client];
+    NSMutableDictionary *info = [NSMutableDictionary new];
+    info[@"app"] = [client collectAppWithState];
+    info[@"device"] = [client collectDeviceWithState];
+    info[@"breadcrumbs"] = [client collectBreadcrumbs];
+    info[@"threads"] = [client collectThreads];
+
+    NSLog(@"Payload info=%@", info); // TODO remove
+    resolve(info);
 }
 
 - (BSGBreadcrumbType)breadcrumbTypeFromString:(NSString *)value {

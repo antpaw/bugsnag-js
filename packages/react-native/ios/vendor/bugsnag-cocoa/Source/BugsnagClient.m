@@ -1413,4 +1413,30 @@ NSString *const BSGBreadcrumbLoadedMessage = @"Bugsnag loaded";
     [self.metadata clearMetadataFromSection:sectionName withKey:key];
 }
 
+// MARK: - methods used by React Native for collecting payload data
+
+- (NSDictionary *)collectAppWithState {
+    return @{
+        // TODO implement
+    };
+}
+
+- (NSDictionary *)collectDeviceWithState {
+    return @{
+        // TODO implement
+    };
+}
+
+- (NSArray *)collectBreadcrumbs {
+    return @[
+        // TODO implement
+    ];
+}
+
+- (NSArray *)collectThreads {
+    return @[
+        // TODO implement
+    ];
+}
+
 @end
